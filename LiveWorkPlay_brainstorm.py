@@ -8,10 +8,16 @@ api_key='VwHJ6rrU7iPL4amYfQlPlprDwbj1OdfOrKqCz4GKHjOIMWWshM4Z7KAG_BmYmEW-tlNtcpH
 headers = {'Authorization': 'Bearer %s' % api_key}
 
 
+
+
 url='https://api.yelp.com/v3/businesses/search'
 
 # In the dictionary, term can take values like food, cafes or businesses like McDonalds
-params = {'term':'seafood','location':'Chicago'}
+params = {'term':'bar',
+          'latitude': 41.799327,
+          'longitude': -87.583625,
+          'radius': 1000,
+          'limit': 50}
 
 
 # Making a get request to the API
@@ -21,5 +27,9 @@ req = requests.get(url, params=params, headers=headers)
 print('The status code is {}'.format(req.status_code))
 
 # printing the text from the response
-json.loads(req.text)
- 
+bus = json.loads(req.text)
+
+bus.keys()
+
+for business in bus['businesses']:
+    print(business['name'])
