@@ -1,4 +1,3 @@
-# LiveWorkPlay
-Choose where to live based on the things you care about
+# Illinois Local Government Counter
 
-An asset-based approach to the housing search
+Visualize and personalize the impact of Illinois' 7,000 units of local government
