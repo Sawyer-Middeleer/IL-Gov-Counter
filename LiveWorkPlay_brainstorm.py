@@ -13,7 +13,7 @@ headers = {'Authorization': 'Bearer %s' % api_key}
 url='https://api.yelp.com/v3/businesses/search'
 
 # In the dictionary, term can take values like food, cafes or businesses like McDonalds
-params = {'term':'bar',
+params = {'term':'cafe',
           'latitude': 41.799327,
           'longitude': -87.583625,
           'radius': 1000,
@@ -24,10 +24,9 @@ params = {'term':'bar',
 req = requests.get(url, params=params, headers=headers)
 
 # proceed only if the status code is 200
-print('The status code is {}'.format(req.status_code))
-
-# printing the text from the response
-bus = json.loads(req.text)
+if req.status_code == 200:
+    # printing the text from the response
+    bus = json.loads(req.text)
 
 bus.keys()
 
