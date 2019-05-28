@@ -125,5 +125,53 @@ tif_districts = gpd.read_file(tif)
 Clean tax rate data
 --------------------------------------------------------------------------------
 """
+# Remove triple and double spaces from Agency Name column
+rates['Agency Name'] = rates['Agency Name'].map(lambda c: c.replace("   ", " "))
+rates['Agency Name'] = rates['Agency Name'].map(lambda c: c.replace("  ", " "))
 
-rates
+
+
+# If you can query the cook county asseessor database with an address, then you can scrape the tax code
+# If you have the tax code, then you can find all of the relevant taxing districts WITHOUT shapefiles
+
+len(rates['Tax code'].unique()) #3968 unique tax codes
+
+"""
+--------------------------------------------------------------------------------
+If I can take an address as input and fill it into this form -- http://www.cookcountypropertyinfo.com/default.aspx#
+then I can scrape the resulting page for the property's tax code.
+
+I can easily use the tax code to query my tax rate database and do all my calculations
+--------------------------------------------------------------------------------
+"""
+"""
+--------------------------------------------------------------------------------
+Let's do some web scraping
+--------------------------------------------------------------------------------
+"""
+
+"""
+--------------------------------------------------------------------------------
+Use BeautifulSoup to quickly grab the website's source code
+
+from urllib.request import urlopen
+from urllib.error import HTTPError
+from bs4 import BeautifulSoup
+
+html = urlopen("http://www.cookcountypropertyinfo.com/default.aspx")
+bsObj = BeautifulSoup(html.read())
+--------------------------------------------------------------------------------
+"""
+
+import mechanize
+
+url = "http://duckduckgo.com/html"
+br = mechanize.Browser()
+br.set_handle_robots(False) # ignore robots
+br.open(url)
+br.select_form(name="x")
+br["q"] = "python"
+res = br.submit()
+content = res.read()
+with open("mechanize_results.html", "w") as f:
+    f.write(content)
