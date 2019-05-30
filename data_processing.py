@@ -50,12 +50,16 @@ f5 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxCod
 files = [f1, f2, f3, f4, f5]
 datasets = []
 
-
 # Join tax rate data into one Pandas dataframe
 for f in files:
     df = pd.read_csv(f)
     datasets.append(df)
 tax_rates = pd.concat(datasets, ignore_index=True)
+
+with open(r'Data_Files\tax_rates.csv', 'w+') as csvFile:
+    writer = csv.writer(csvFile)
+    writer.writerows(tax_rates)
+csvFile.close()
 
 """
 --------------------------------------------------------------------------------
