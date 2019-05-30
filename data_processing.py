@@ -42,27 +42,27 @@ Read in those big ugly tax rate datasets and combine them into one big dataset w
 tax rates from 2006 to 2016
 --------------------------------------------------------------------------------
 """
-f1 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Tax Rates by Body 2006 - 2013.csv"
-f2 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\TaxcodeAgencyFile2014.csv"
-f3 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\TaxCodeAgencyFile2015.csv"
-f4 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\TaxCodeAgencyRate2016.csv"
-f5 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\TaxCodeAgencyRate2017.csv"
+f1 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\Tax Rates by Body 2006 - 2013.csv"
+f2 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxcodeAgencyFile2014.csv"
+f3 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxCodeAgencyFile2015.csv"
+f4 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxCodeAgencyRate2016.csv"
+f5 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxCodeAgencyRate2017.csv"
 files = [f1, f2, f3, f4, f5]
 datasets = []
+
+
 # Join tax rate data into one Pandas dataframe
 for f in files:
     df = pd.read_csv(f)
     datasets.append(df)
-
-for d in datasets:
-    print(d.head())
+tax_rates = pd.concat(datasets, ignore_index=True)
 
 """
 --------------------------------------------------------------------------------
 Load in assessment district median assessment levels cook county assessment ratios dataset
 --------------------------------------------------------------------------------
 """
-ratios_and_median_levels = pd.read_csv(r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Cook County Assessment Ratios.csv")
+ratios_and_median_levels = pd.read_csv(r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\Cook County Assessment Ratios.csv")
 
 
 """
@@ -79,52 +79,52 @@ Read in Political Boundary GeoJSONs
 #counties = gpd.read_file(cty)
 
 # Townships Geography
-twn = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Political Township 2016.geojson"
+twn = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Political Township 2016.geojson"
 townships = gpd.read_file(twn)
 townships.sort_values(['name'])
 
 # Municipalities Geography
-mun = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Municipality 2014.geojson"
+mun = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Municipality 2014.geojson"
 municipalities = gpd.read_file(mun)
 
 # MWRD Geography
-mwr = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Metropolitan Water Reclamation Tax Dist 2015.geojson"
+mwr = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Metropolitan Water Reclamation Tax Dist 2015.geojson"
 mwrd = gpd.read_file(mwr)
 
 # Elementary Schools Geography
-ele = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Elementary School Tax District 2016.geojson"
+ele = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Elementary School Tax District 2016.geojson"
 elementary_schools = gpd.read_file(ele)
 
 # High School Geography
-hgh = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - High School Tax Dist 2015.geojson"
+hgh = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - High School Tax Dist 2015.geojson"
 high_schools = gpd.read_file(hgh)
 
 # Community College Geography
-com = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Community College Tax District 2016.geojson"
+com = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Community College Tax District 2016.geojson"
 community_colleges = gpd.read_file(com)
 
 # Unit School Geography
-unt = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Unit School Tax Districts 2015.geojson"
+unt = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Unit School Tax Districts 2015.geojson"
 unit_schools = gpd.read_file(unt)
 
 # Library District Geography
-lib = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Library Tax Dist 2015.geojson"
+lib = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Library Tax Dist 2015.geojson"
 libraries = gpd.read_file(lib)
 
 # Park District Geography
-prk = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Park Tax Dist 2015.geojson"
+prk = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Park Tax Dist 2015.geojson"
 parks = gpd.read_file(prk)
 
 # Sanitary District Geography
-san = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Sanitary Tax Dist 2015.geojson"
+san = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Sanitary Tax Dist 2015.geojson"
 sanitary_districts = gpd.read_file(san)
 
 # Fire Protection District Geography
-fir = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Fire Protection Tax Dist 2016.geojson"
+fir = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Fire Protection Tax Dist 2016.geojson"
 fire_protection_districts = gpd.read_file(fir)
 
 #TIF Districts
-tif = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Tax Increment Financing (TIF) Districts 2016.geojson"
+tif = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Tax Increment Financing (TIF) Districts 2016.geojson"
 tif_districts = gpd.read_file(tif)
 
 """
