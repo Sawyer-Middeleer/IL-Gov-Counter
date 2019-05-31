@@ -170,6 +170,21 @@ print("Tax code: " + tax_code.get_text())
 --------------------------------------------------------------------------------
 Test out using the scraped tax code
 
-Use tax code to find taxing bodies
+Use tax code to find taxing bodies for specific tax codes
 --------------------------------------------------------------------------------
 """
+
+filtered_rates = tax_rates.loc[tax_rates['Tax code'] == int(tax_code.get_text())]
+filtered_rates.loc[filtered_rates['Tax Year'] == 2017]
+
+
+"""
+--------------------------------------------------------------------------------
+Explore trends in the data
+--------------------------------------------------------------------------------
+"""
+
+rates_2017 = tax_rates.loc[tax_rates['Tax Year'] == 2017]
+rates_2017.groupby('Tax code').Agency.nunique().mean()
+
+tax_rates.groupby(['Tax Year','Tax code'])['Agency'].nunique()
