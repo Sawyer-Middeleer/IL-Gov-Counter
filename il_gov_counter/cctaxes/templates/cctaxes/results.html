@@ -1,8 +1,8 @@
-<h1>{{ question.question_text }}</h1>
+<h1>{{ taxcode.tax_code }}</h1>
 
 <ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% for choice in taxcode.propaddress_set.all %}
+    <li>{{ propaddress.tax_code }} -- {{ propaddress.pin }} vote{{ propaddress.tax_code|pluralize }}</li>
 {% endfor %}
 </ul>
 

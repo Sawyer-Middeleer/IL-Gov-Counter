@@ -1,12 +1,10 @@
-<h1>{{ inputpin.pin }}</h1>
+<h1>{{ taxcode.tax_code }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'cctaxes:vote' question.id %}" method="post">
+<form action="{% url 'cctaxes:taxcode' propaddress.id %}" method="post">
 {% csrf_token %}
-{% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-{% endfor %}
+    <input type="radio" name="propaddress" id="propaddress{{ forloop.counter }}" value="{{ propaddress.id }}">
+    <label for="propaddress{{ forloop.counter }}">{{ propaddress.pin }}</label><br>
 <input type="submit" value="Vote">
 </form>

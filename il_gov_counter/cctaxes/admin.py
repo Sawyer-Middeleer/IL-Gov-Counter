@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import InputPin
+from .models import TaxCode, PropAddress
 
-admin.site.register(InputPin)
+admin.site.register(PropAddress)

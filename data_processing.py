@@ -50,17 +50,6 @@ f5 = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\TaxCod
 files = [f1, f2, f3, f4, f5]
 datasets = []
 
-# Join tax rate data into one Pandas dataframe
-for f in files:
-    df = pd.read_csv(f)
-    datasets.append(df)
-tax_rates = pd.concat(datasets, ignore_index=True)
-
-with open(r'Data_Files\tax_rates.csv', 'w+') as csvFile:
-    writer = csv.writer(csvFile)
-    writer.writerows(tax_rates)
-csvFile.close()
-
 """
 --------------------------------------------------------------------------------
 Load in assessment district median assessment levels cook county assessment ratios dataset
@@ -136,16 +125,44 @@ tif_districts = gpd.read_file(tif)
 Clean tax rate data
 --------------------------------------------------------------------------------
 """
+
+# Join tax rate data into one Pandas dataframe
+for f in files:
+    df = pd.read_csv(f)
+    datasets.append(df)
+tax_rates = pd.concat(datasets, ignore_index=True)
+
+# remove duplicate rows (there were some duplicates in 2006-7)
+tax_rates = tax_rates.drop_duplicates()
+tax_rates = tax_rates.sort_values(by='Tax Year', ascending=True)
+
+
 # Remove triple and double spaces from Agency Name column
-rates['Agency Name'] = rates['Agency Name'].map(lambda c: c.replace("   ", " "))
-rates['Agency Name'] = rates['Agency Name'].map(lambda c: c.replace("  ", " "))
+tax_rates['Agency Name'] = tax_rates['Agency Name'].map(lambda c: c.replace("   ", " "))
+tax_rates['Agency Name'] = tax_rates['Agency Name'].map(lambda c: c.replace("  ", " "))
 
+# Create assessment districts column from townships
+townships_list = tax_rates.loc[tax_rates['Agency Name'].str.contains('TOWN ') &
+                                         ~tax_rates['Agency Name'].str.contains(' DIST') &
+                                         ~tax_rates['Agency Name'].str.contains('FUND') &
+                                         ~tax_rates['Agency Name'].str.contains('TIF') &
+                                         ~tax_rates['Agency Name'].str.contains('SERVICE')]['Agency Name'].unique()
 
+is_assessment_district = tax_rates['Agency Name'].map(lambda c: c in townships_list)
 
-# If you can query the cook county asseessor database with an address, then you can scrape the tax code
-# If you have the tax code, then you can find all of the relevant taxing districts WITHOUT shapefiles
+df_to_merge = tax_rates[['Tax Year', 'Tax code','Agency Name']][is_assessment_district]
 
-len(rates['Tax code'].unique()) #3968 unique tax codes
+df_to_merge = df_to_merge.rename(columns={'Agency Name':'Assessment District'})
+df_to_merge = df_to_merge.drop_duplicates()
+
+tax_rates = tax_rates.merge(df_to_merge, on=['Tax code', 'Tax Year'], how='left', copy=False)
+
+# Create column with count of taxing bodies in tax code
+tax_rates['Taxing Body Count'] = tax_rates.groupby(['Tax Year', 'Tax code'])['Tax code'].transform('size')
+
+tax_rates
+# read tax_rates df to csv file
+tax_rates.to_csv('tax_rates.csv', sep=',')
 
 """
 --------------------------------------------------------------------------------
@@ -176,6 +193,7 @@ Use tax code to find taxing bodies for specific tax codes
 
 filtered_rates = tax_rates.loc[tax_rates['Tax code'] == int(tax_code.get_text())]
 filtered_rates.loc[filtered_rates['Tax Year'] == 2017]
+
 
 
 """

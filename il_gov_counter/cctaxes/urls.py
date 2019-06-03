@@ -2,16 +2,13 @@ from . import views
 
 from django.contrib import admin
 from django.urls import include, path
-from django.conf.urls import patterns, include, url
-from InputPin.views import *
+from django.conf.urls import include, url
 
 appname = 'cctaxes'
 urlpatterns = [
-    path('cctaxes/', include('cctaxes.urls')),
-    path('admin/', admin.site.urls),
-    url(r'^search/', search),
-    path('', views.IndexView.as_view(), name='index'),
-    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
-    path('<int:question_id>/vote/', views.vote, name='vote'),
+#    url(r'^search/', search),
+    path('', views.index, name='index'),
+    path('<int:taxcode_id>/', views.detail, name='detail'),
+    path('<int:taxcode_id>/results/', views.results, name='results'),
+    path('<int:taxcode_id>/search/', views.search, name='search'),
 ]
