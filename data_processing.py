@@ -150,6 +150,7 @@ townships_list = tax_rates.loc[tax_rates['Agency Name'].str.contains('TOWN ') &
 
 is_assessment_district = tax_rates['Agency Name'].map(lambda c: c in townships_list)
 
+# create a temporary df of only rows that have agencies that are also assessment districts
 df_to_merge = tax_rates[['Tax Year', 'Tax code','Agency Name']][is_assessment_district]
 
 df_to_merge = df_to_merge.rename(columns={'Agency Name':'Assessment District'})
@@ -160,9 +161,33 @@ tax_rates = tax_rates.merge(df_to_merge, on=['Tax code', 'Tax Year'], how='left'
 # Create column with count of taxing bodies in tax code
 tax_rates['Taxing Body Count'] = tax_rates.groupby(['Tax Year', 'Tax code'])['Tax code'].transform('size')
 
-tax_rates
-# read tax_rates df to csv file
+def titlena(s):
+    if type(s) == str:
+        return s.title()
+
+def remove_with_na(s, s2):
+    if type(s) == str:
+        return s.replace(s2, "")
+
+# clean assessment district column
+tax_rates['Assessment District'] = tax_rates['Assessment District'].map(lambda c: titlena(c))
+tax_rates['Assessment District'] = tax_rates['Assessment District'].map(lambda c: remove_with_na(c, "Town Of "))
+tax_rates['Assessment District'] = tax_rates['Assessment District'].map(lambda c: remove_with_na(c, "Town "))
+tax_rates.head()
+
+# merge tax_rates and ratios_and_median_levels dfs
+# do some data cleaning first
+ratios_and_median_levels = ratios_and_median_levels.rename(columns={'Year':'Tax Year'})
+ratios_and_median_levels['Assessment District'] = ratios_and_median_levels['Assessment District'].map(lambda c: c.replace("Norwood park", "Norwood Park"))
+ratios_and_median_levels.loc[ratios_and_median_levels['Assessment District']=='Calumet'] # some years calumet didn't have a number
+# get rid of rows with NaN assessment districts (figure this out later)
+tax_rates = tax_rates.dropna()
+tax_rates_with_ratios = tax_rates.merge(ratios_and_median_levels, on=['Assessment District', 'Tax Year'], how='left', copy=False)
+
+# read dfs to csv file
 tax_rates.to_csv('tax_rates.csv', sep=',')
+tax_rates_with_ratios.to_csv('tax_rates_with_ratios.csv', sep=',')
+
 
 """
 --------------------------------------------------------------------------------

@@ -1,31 +1,54 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import loader
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from .models import TaxCode, PropAddress
+from .forms import PinForm
 from django.views import generic
 from django.utils import timezone
 import csv
 
-def index(request):
-    prompt = "Please enter an address PIN"
-    return HttpResponse(prompt)
+def index(request): # home page
+    greeting = "Please enter your 14-digit address PIN"
+    template = loader.get_template('cctaxes/index.html')
 
-def detail(request, pin):
-    return HttpResponse("You're looking at the address with the PIN %s." % pin)
+    if request.method == 'POST':
+        form = PinForm(request.POST)
+        if form.is_valid():
+            pass  # does nothing, just trigger the validation
+    else:
+        form = PinForm()
 
-def results(request, tax_code):
-    response = "Your address is in the tax code: %s."
+    context = {'greeting': greeting,
+               'form': form}
+    return render(request,'cctaxes/index.html', context)
+
+def results(request):
+    pin = PropAddress.pin
+    html = urlopen('http://www.cookcountyassessor.com/Property.aspx?mode=details&pin='+pin)
+    bsObj = BeautifulSoup(html.read())
+    tax_code_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropInfoTaxcode")
+    tax_code = tax_code_obj.get_text()
+
     return HttpResponse(response % tax_code)
 
-def search(request):
+
+def get_pin(request):
+    # if this is a POST request we need to process the form data
+    codes = get_object_or_404(TaxCode, pk=pk)
     if request.method == 'POST':
-        search_id = request.POST.get('textfield', None)
-        try:
-            pin_in = PropAddress.objects.get(pin = search_id)
-            #do something with user
-            html = ("<H1>%s</H1>", pin_in)
-            return HttpResponse(html)
-        except PropAddress.DoesNotExist:
-            return HttpResponse("PIN not found. Please enter a correct PIN")
+        # create a form instance and populate it with data from the request:
+        form = PinForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            p = form.save(commit=False)
+            p.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('cctaxes/results/')
+
+    # if a GET (or any other method) we'll create a blank form
     else:
-        return render(request, 'form.html')
+        form = PinForm()
+
+    return render(request, 'index.html', {'form':form, 'codes':codes})

@@ -1,9 +1,6 @@
-<h1>{{ taxcode.tax_code }}</h1>
+{% extends 'cctaxes/index.html' %}
 
-<ul>
-{% for choice in taxcode.propaddress_set.all %}
-    <li>{{ propaddress.tax_code }} -- {{ propaddress.pin }} vote{{ propaddress.tax_code|pluralize }}</li>
-{% endfor %}
-</ul>
 
-<a href="{% url 'cctaxes:detail' question.id %}">Search another address?</a>
+<h1> Information for PIN: {{ propaddress.pin }}, located at {{propadress.tax_code}}</h1>
+
+<a action="/cctaxes/">Search another address?</a>
