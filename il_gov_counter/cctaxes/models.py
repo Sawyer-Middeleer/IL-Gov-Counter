@@ -5,6 +5,8 @@ from django.utils import timezone
 from bs4 import BeautifulSoup
 import urllib
 import re
+import csv
+import io
 
 # user input
 class PropAddress(models.Model):
@@ -29,8 +31,8 @@ class PropAddress(models.Model):
 
 # from tax_rates csv
 class TaxCode(models.Model):
-    tax_code = models.IntegerField(default=12345)
     tax_year = models.IntegerField(default=2017)
+    tax_code = models.IntegerField(default=12345)
     agency = models.IntegerField(default=10010000)
     agency_name = models.CharField(default="COUNTY OF COOK", max_length=50)
     agency_rate = models.DecimalField(default=0, decimal_places=3, max_digits=6)
@@ -38,11 +40,30 @@ class TaxCode(models.Model):
     assessment_district = models.CharField(default="Barrington", max_length=50)
     taxing_body_count = models.IntegerField(default=0)
     equalization_factor = models.DecimalField(default=2.0, decimal_places=3, max_digits=6)
-    slug = models.SlugField(max_length=10)
+    user_address = models.ForeignKey(PropAddress, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.tax_code
+        return str(self.tax_code)
 
     def get_absolute_url(self):
         """Returns the url to access a particular instance of the model."""
         return reverse('model-detail-view', args=[str(self.id)])
+
+    def read_tax_rates_data(self):
+        with open(r'C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\il_gov_counter\cctaxes\static\cctaxes\oak_park_rates.csv', encoding='utf-8-sig') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if row[0] != 'Tax Year':
+                    _, created = TaxCode.objects.get_or_create(
+                        tax_year=row[0],
+                        tax_code=row[1],
+                        agency=row[2],
+                        agency_name=row[3],
+                        agency_rate=row[4],
+                        tax_code_rate=row[5],
+                        assessment_district=row[6],
+                        taxing_body_count=row[7],
+                        equalization_factor=row[8]
+                    )
+                # creates a tuple of the new object or
+                # current object and a boolean of if it was created

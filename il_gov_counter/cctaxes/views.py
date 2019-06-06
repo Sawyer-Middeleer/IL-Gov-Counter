@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import TaxCode, PropAddress
 from .forms import PinForm
@@ -15,7 +15,8 @@ def index(request): # home page
     if request.method == 'POST':
         form = PinForm(request.POST)
         if form.is_valid():
-            pass  # does nothing, just trigger the validation
+            pin_search = form.save()
+            return redirect('results', id=pin_search.id)
     else:
         form = PinForm()
 
@@ -23,32 +24,27 @@ def index(request): # home page
                'form': form}
     return render(request,'cctaxes/index.html', context)
 
-def results(request):
-    pin = PropAddress.pin
-    html = urlopen('http://www.cookcountyassessor.com/Property.aspx?mode=details&pin='+pin)
-    bsObj = BeautifulSoup(html.read())
-    tax_code_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropInfoTaxcode")
-    tax_code = tax_code_obj.get_text()
 
-    return HttpResponse(response % tax_code)
+def results(request, id):
+    property_address = PropAddress.objects.get(id=id)
+    property_address.get_tax_code()
 
+    prop_tax_code = TaxCode.objects.filter(tax_code=property_address.tax_code)
+    prop_tax_code_17 = prop_tax_code.filter(tax_year=2017)
+    bodies = []
+    for c in prop_tax_code_17:
+        bodies.append(c.agency_name)
+    body_count = len(bodies)
 
-def get_pin(request):
-    # if this is a POST request we need to process the form data
-    codes = get_object_or_404(TaxCode, pk=pk)
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = PinForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            p = form.save(commit=False)
-            p.save()
-            # redirect to a new URL:
-            return HttpResponseRedirect('cctaxes/results/')
+    # taxing_bodies = []
+    # for row in tax_codes.iterator():
+    #     if row.tax_code == prop_code:
+    #         taxing_bodies.append(row.tax_code)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = PinForm()
+    context = {
+               'prop_tax_code':property_address.tax_code,
+               'body_count':body_count,
+               'bodies':bodies,
+               }
 
-    return render(request, 'index.html', {'form':form, 'codes':codes})
+    return render(request, 'cctaxes/results.html', context)

@@ -60,68 +60,6 @@ ratios_and_median_levels = pd.read_csv(r"C:\Users\midde\OneDrive\Documents\GitHu
 
 """
 --------------------------------------------------------------------------------
-Read in Political Boundary GeoJSONs
-
-*** NEED TO FIND/ASK FOR
---- County, consolidated elections, forest preserve, general assistance,
-    road and bridge, mental health, public health, special service areas, mosquito abatement
---------------------------------------------------------------------------------
-"""
-# County Geography   *** ask Jeremy for this one
-#cty = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\ccgisdata - Political Township 2016.geojson"
-#counties = gpd.read_file(cty)
-
-# Townships Geography
-twn = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Political Township 2016.geojson"
-townships = gpd.read_file(twn)
-townships.sort_values(['name'])
-
-# Municipalities Geography
-mun = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Municipality 2014.geojson"
-municipalities = gpd.read_file(mun)
-
-# MWRD Geography
-mwr = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Metropolitan Water Reclamation Tax Dist 2015.geojson"
-mwrd = gpd.read_file(mwr)
-
-# Elementary Schools Geography
-ele = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Elementary School Tax District 2016.geojson"
-elementary_schools = gpd.read_file(ele)
-
-# High School Geography
-hgh = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - High School Tax Dist 2015.geojson"
-high_schools = gpd.read_file(hgh)
-
-# Community College Geography
-com = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Community College Tax District 2016.geojson"
-community_colleges = gpd.read_file(com)
-
-# Unit School Geography
-unt = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Unit School Tax Districts 2015.geojson"
-unit_schools = gpd.read_file(unt)
-
-# Library District Geography
-lib = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Library Tax Dist 2015.geojson"
-libraries = gpd.read_file(lib)
-
-# Park District Geography
-prk = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Park Tax Dist 2015.geojson"
-parks = gpd.read_file(prk)
-
-# Sanitary District Geography
-san = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Sanitary Tax Dist 2015.geojson"
-sanitary_districts = gpd.read_file(san)
-
-# Fire Protection District Geography
-fir = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Fire Protection Tax Dist 2016.geojson"
-fire_protection_districts = gpd.read_file(fir)
-
-#TIF Districts
-tif = r"C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\Data_Files\ccgisdata - Tax Increment Financing (TIF) Districts 2016.geojson"
-tif_districts = gpd.read_file(tif)
-
-"""
---------------------------------------------------------------------------------
 Clean tax rate data
 --------------------------------------------------------------------------------
 """
@@ -183,9 +121,9 @@ ratios_and_median_levels.loc[ratios_and_median_levels['Assessment District']=='C
 # get rid of rows with NaN assessment districts (figure this out later)
 tax_rates = tax_rates.dropna()
 tax_rates_with_ratios = tax_rates.merge(ratios_and_median_levels, on=['Assessment District', 'Tax Year'], how='left', copy=False)
-
+tax_rates_with_ratios = tax_rates_with_ratios.dropna()
 # read dfs to csv file
-tax_rates.to_csv('tax_rates.csv', sep=',')
+#tax_rates.to_csv('tax_rates.csv', sep=',')
 tax_rates_with_ratios.to_csv('tax_rates_with_ratios.csv', sep=',')
 
 
