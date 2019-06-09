@@ -1,14 +1,15 @@
-{% load static %}<!DOCTYPE html>
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
 
 <html>
   <head>
-    <meta charset="utf-8">
+    {% block head %}
     <title>Property Tax Hunter | Cook County</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endblock %}
   </head>
 
+  {% block body %}
   <body>
 
     <h1 class="breadcrumb-item active"> Where Do My Property Taxes Go? </h1>
@@ -22,17 +23,14 @@
             <button type="submit">Submit</button>
         </form>
 
-        {% block content %}
-        {% endblock %}
-
     </div>
 
-    <!-- <form action="/results/" method="post">
-    {% csrf_token %}
-        <input type='text' name='pin' id="pin" value="{{ pin.id }}">
-    <input type="submit" value="Search PIN">
-    </form> -->
+      {% block content %}
+      {% endblock %}
+
+      {% block page_content %}
+      {% endblock %}
 
   </body>
-
+  {% endblock %}
 </html>

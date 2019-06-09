@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+<html>
+
+
+      {% block page_content %}
+          <div>
+              <h1> Not all communities have the same tax burden </h1>
+              <h3> Homeowners in <b>{{ property_address.tax_code }}</b> are charged [num]% <br> of their home's value <b>every year</b> on average in property taxes</h3>
+              <h3> In exchange, residents of {{ property_address.tax_code }} enjoy high quality public services </h3>
+              <h1> But there is a tradeoff </h1>
+          </div>
+      {% endblock %}
+
+</html>
