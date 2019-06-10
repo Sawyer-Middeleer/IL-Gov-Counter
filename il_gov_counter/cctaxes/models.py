@@ -12,6 +12,7 @@ import io
 class PropAddress(models.Model):
     pin = models.CharField(max_length=14)
     tax_code = models.CharField(max_length=6)
+    value = models.IntegerField(default=0)
     # tax_code needs to come from scraping the assessor's website
     def __str__(self):
         return self.pin
@@ -39,7 +40,11 @@ class TaxCode(models.Model):
     tax_code_rate = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     assessment_district = models.CharField(default="Barrington", max_length=50)
     taxing_body_count = models.IntegerField(default=0)
+    assessment_ratio = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     equalization_factor = models.DecimalField(default=2.0, decimal_places=3, max_digits=6)
+    effective_property_tax_rate = models.DecimalField(default=0, decimal_places=3, max_digits=6)
+    tax_rate_proportion = models.DecimalField(default=0, decimal_places=3, max_digits=6)
+    etr_share = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     user_address = models.ForeignKey(PropAddress, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -50,7 +55,7 @@ class TaxCode(models.Model):
         return reverse('model-detail-view', args=[str(self.id)])
 
     def read_tax_rates_data(self):
-        with open(r'C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\il_gov_counter\cctaxes\static\cctaxes\oak_park_rates.csv', encoding='utf-8-sig') as f:
+        with open(r'C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\il_gov_counter\cctaxes\static\cctaxes\oak_park.csv', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[0] != 'Tax Year':
@@ -63,7 +68,11 @@ class TaxCode(models.Model):
                         tax_code_rate=row[5],
                         assessment_district=row[6],
                         taxing_body_count=row[7],
-                        equalization_factor=row[8]
+                        assessment_ratio=row[8],
+                        equalization_factor=row[9],
+                        effective_property_tax_rate=row[10],
+                        tax_rate_proportion=row[11],
+                        etr_share=row[12]
                     )
                 # creates a tuple of the new object or
                 # current object and a boolean of if it was created

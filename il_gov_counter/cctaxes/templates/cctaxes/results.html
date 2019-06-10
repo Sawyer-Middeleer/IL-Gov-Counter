@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'cctaxes/index.html' %}
 
 
 <html>
@@ -15,13 +15,21 @@
                   <h1> Your address is located in tax code {{ prop_tax_code }}</h1>
                   <h2> Your property taxes fund <b>{{ body_count }}</b> different local government bodies</h2>
 
-                  {% for body in bodies %}
+                  {% for body in bodies_info %}
                   <ul>
                     {{ body }}
                   </ul>
                   {% endfor %}
 
+                
                   <a href="{% url 'tax-impact' %}" onclick="prop_id.submit();"> How does this affect me? </a>
+          </div>
+
+          <div>
+              <h1> Not all communities have the same tax burden </h1>
+              <h3> Homeowners in <b>{{ prop_tax_code }}</b> are charged [num]% of their home's value <b>every year</b> on average in property taxes</h3>
+              <h3> In exchange, residents of {{ prop_tax_code }} enjoy high quality public services </h3>
+              <h3> But there is a tradeoff </h3>
           </div>
 
       {% endblock %}

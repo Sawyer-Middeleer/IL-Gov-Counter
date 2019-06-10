@@ -9,7 +9,7 @@ from django.utils import timezone
 import csv
 
 def index(request): # home page
-    greeting = "Please enter your 14-digit address PIN"
+
     template = loader.get_template('cctaxes/index.html')
 
     if request.method == 'POST':
@@ -20,27 +20,24 @@ def index(request): # home page
     else:
         form = PinForm()
 
-    context = {'greeting': greeting,
-               'form': form}
-    return render(request,'base.html', context)
+    context = {'form': form}
+    return render(request,'cctaxes/index.html', context)
 
 
 def results(request, id):
-    greeting = "Search another 14-digit address PIN"
     property_address = PropAddress.objects.get(id=id)
     property_address.get_tax_code()
 
-    prop_tax_code = TaxCode.objects.filter(tax_code=property_address.tax_code).order_by('-agency_rate')
+    prop_tax_code = TaxCode.objects.filter(tax_code=property_address.tax_code).order_by('-etr_share')
     prop_tax_code_17 = prop_tax_code.filter(tax_year=2017)
-    bodies = []
-    for c in prop_tax_code_17:
-        bodies.append(c.agency_name)
-    body_count = len(bodies)
+    effective_property_tax_rate = prop_tax_code_17[0].effective_property_tax_rate
+    body_count = prop_tax_code_17[0].taxing_body_count
 
-    # taxing_bodies = []
-    # for row in tax_codes.iterator():
-    #     if row.tax_code == prop_code:
-    #         taxing_bodies.append(row.tax_code)
+    etr_info = []
+    bodies_info = []
+    for c in prop_tax_code_17:
+        bodies_info.append(c.agency_name)
+        etr_info.append(c.etr_share)
 
     if request.method == 'POST':
         form = PinForm(request.POST)
@@ -54,12 +51,14 @@ def results(request, id):
                'prop_id':property_address.id,
                'prop_tax_code':property_address.tax_code,
                'body_count':body_count,
-               'bodies':bodies,
+               'effective_property_tax_rate': effective_property_tax_rate,
+               'bodies_info':bodies_info,
+               'etr_info':etr_info,
                'form':form,
-               'greeting': greeting,
                }
 
     return render(request, 'cctaxes/results.html', context)
+
 
 def tax_impact(request):
     property_address = request.session.get('property_address')
