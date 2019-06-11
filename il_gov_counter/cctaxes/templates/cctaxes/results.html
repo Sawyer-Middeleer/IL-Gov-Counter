@@ -2,34 +2,105 @@
 
 
 <html>
-  <!-- <head>
+
     {% block head %}
-    <title>Property Tax Hunter | Results</title>
+        <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Government Agency');
+        data.addColumn('number', 'Share of Property Tax Bill');
+        data.addRows({{ tax_data_table|safe }});
+
+        // Set chart options
+        var options = {'title':'How Your Tax Bill gets Split Up',
+                       'width':1200,
+                       'height':600,
+                        pieSliceText: 'label',
+                        slices: {  'School District 97 ': {offset: 0.25},
+                                  12: {offset: 0.25}
+                                },
+                        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
     {% endblock %}
-  </head> -->
 
   <body>
 
       {% block content %}
           <div class="page-content">
-                  <h1> Your address is located in tax code {{ prop_tax_code }}</h1>
-                  <h2> Your property taxes fund <b>{{ body_count }}</b> different local government bodies</h2>
+                  <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
+                  <h2> Using this tax code, we can tranlsate the rate you see on your property tax bill into
+                       the percentage of <b>full market value</b> that homeowners in your neightborhood pay every year.
+                  </h2>
+                  <h3> On average, you and your neighbors pay <b>{{ effective_property_tax_rate }}%</b>
+                       of your homes' market value annually in property taxes.
+                  </h3>
 
-                  {% for body in bodies_info %}
-                  <ul>
-                    {{ body }}
-                  </ul>
-                  {% endfor %}
+                  <br>
+                  <br>
 
-                
-                  <a href="{% url 'tax-impact' %}" onclick="prop_id.submit();"> How does this affect me? </a>
+                  <h2> So where does all of this money go? </h2>
+
+                  <div>
+
+                  <h3> Your property taxes fund <b>{{ body_count }}</b> different local government bodies.</h3>
+
+                  <body>
+                    <!--Div that will hold the pie chart-->
+                    <div id="chart_div"></div>
+                  </body>
+                  </div>
+              </div>
+
+                  <!-- <a href="{% url 'tax-impact' %}" onclick="prop_id.submit();"> How does this affect me? </a> -->
+
+          <div>
+              <h1> Wow! That's a lot to get a handle on. Let's simplify it a bit. </h1>
+
+                                <br>
+                                <br>
+              <h3> Each year, {{ effective_property_tax_rate }} cents of every dollar of your home's value goes to fund public schools, parks
+                  and other essential government services.
+              </h3>
+
+              {% firstof var1 var2 var3 "blah" %}
+
+
+              <p> See how your neighborhood compares to others in your township </p>
+          </div>
+
+          <br>
+          <br>
+
+          <div>
+
+              <h3> While a homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually,
+                   the {{ township }} Township average is {{ township_etr }}%
+              </h3>
+              <h3> In exchange, residents of {{ township }} enjoy high quality public services </h3>
+              <h3> Property taxes in your township range from {{ township_min }}% to {{ township_max }}% </h3>
           </div>
 
           <div>
-              <h1> Not all communities have the same tax burden </h1>
-              <h3> Homeowners in <b>{{ prop_tax_code }}</b> are charged [num]% of their home's value <b>every year</b> on average in property taxes</h3>
-              <h3> In exchange, residents of {{ prop_tax_code }} enjoy high quality public services </h3>
-              <h3> But there is a tradeoff </h3>
+
           </div>
 
       {% endblock %}

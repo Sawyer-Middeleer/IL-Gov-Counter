@@ -36,6 +36,10 @@
     </style>
     <!-- Custom styles for this template -->
     <!-- <link href="https://getbootstrap.com/docs/4.3/examples/cover/cover.css" rel="stylesheet"> -->
+
+    {% block head %}
+    {% endblock %}
+
   </head>
 
 
@@ -46,7 +50,7 @@
 
   <main role="main" class="inner cover">
     <h1 class="cover-heading">Property Tax Explorer | Cook County</h1>
-    <h3 class="masthead-brand"> Cook County homeowners pay property taxes every year, but the process is confusing and opaque.
+    <h3 class="masthead-brand"> Cook County homeowners pay property taxes every year, but the process can be a black box.
     <p class="lead"> Enter your address PIN to find out where <b>your</b> taxes go and how they compare with the rest of the county.</p>
 
     <form method="post">
