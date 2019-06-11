@@ -6,8 +6,12 @@ from .models import TaxCode, PropAddress
 from .forms import PinForm
 from django.views import generic
 from django.utils import timezone
+import re
 import csv
+import string
 import numpy as np
+import pandas as pd
+from django_pandas.io import read_frame
 from django.db.models import Avg, Min, Max
 
 def index(request): # home page
@@ -30,23 +34,34 @@ def results(request, id):
     property_address = PropAddress.objects.get(id=id)
     property_address.get_tax_code()
 
+    all_codes = TaxCode.objects.filter(tax_year=2017).distinct().order_by('tax_code')
+
     prop_tax_code = TaxCode.objects.filter(tax_code=property_address.tax_code).order_by('-etr_share')
     prop_tax_code_17 = prop_tax_code.filter(tax_year=2017)
-
-    effective_property_tax_rate = round(prop_tax_code_17[0].effective_property_tax_rate, 2)
-    body_count = prop_tax_code_17[0].taxing_body_count
-    township = prop_tax_code_17[0].assessment_district
+    prop_tax_17_df = read_frame(prop_tax_code_17)
+    by_category = prop_tax_17_df.groupby('agency_type')['tax_rate_proportion'].sum()
 
 
     bodies_info = []
     etr_info = []
     tax_table = []
+
+    categories = []
+    category_etrs = []
+    category_table = []
+
     for c in prop_tax_code_17:
         bodies_info.append(c.agency_name)
         etr_info.append(float(c.tax_rate_proportion))
-    for i in range(body_count):
+
+    for i in range(prop_tax_code_17[0].taxing_body_count):
         tax_table.append([bodies_info[i], etr_info[i]])
 
+    for row in range(len(by_category)):
+        categories.append(by_category.index[row])
+        category_etrs.append(float(by_category[row]))
+    for i in range(len(categories)):
+        category_table.append([categories[i], category_etrs[i]])
 
     if request.method == 'POST':
         form = PinForm(request.POST)
@@ -57,25 +72,34 @@ def results(request, id):
         form = PinForm()
 
 
-    all_codes = TaxCode.objects.filter(tax_year=2017).order_by('tax_code')
-
     codes = set([])
+
     for code in all_codes:
         codes.add(code.tax_code)
 
+    etr = round(prop_tax_code_17[0].effective_property_tax_rate, 2)
+    home_value = re.sub('[^0-9]','', property_address.value)
+    payment = float(etr)/100*float(home_value)*.5
     etr_summary = TaxCode.objects.filter(tax_year=2017).aggregate(Avg('effective_property_tax_rate'), Max('effective_property_tax_rate'), Min('effective_property_tax_rate'))
 
     context = {
                'prop_id':property_address.id,
+               'prop_val':home_value,
                'prop_tax_code':property_address.tax_code,
-               'body_count':body_count,
-               'effective_property_tax_rate': effective_property_tax_rate,
-               'township':township,
+               'tax_code_rate':round(prop_tax_code_17[0].tax_code_rate,2),
+               'body_count':prop_tax_code_17[0].taxing_body_count,
+               'effective_property_tax_rate':etr,
+               'payment':round(int(payment),-2),
+               'township':prop_tax_code_17[0].assessment_district,
                'tax_data_table':tax_table,
+               'category_data_table':category_table,
                'township_etr':round(etr_summary['effective_property_tax_rate__avg'], 2),
                'township_min':round(etr_summary['effective_property_tax_rate__min'], 2),
                'township_max':round(etr_summary['effective_property_tax_rate__max'], 2),
+               'categories':categories,
+               'category_etrs':category_etrs,
                'tax_codes':codes,
+               'by_category':by_category,
                'form':form,
                }
 

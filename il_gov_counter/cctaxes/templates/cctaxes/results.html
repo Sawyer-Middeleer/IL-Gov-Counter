@@ -12,12 +12,12 @@
       google.charts.load('current', {'packages':['corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
-
+      google.charts.setOnLoadCallback(drawAgencyChart);
+      google.charts.setOnLoadCallback(drawCategoryChart);
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
-      function drawChart() {
+      function drawAgencyChart() {
 
         // Create the data table.
         var data = new google.visualization.DataTable();
@@ -29,14 +29,32 @@
         var options = {'title':'How Your Tax Bill gets Split Up',
                        'width':1200,
                        'height':600,
-                        pieSliceText: 'label',
-                        slices: {  'School District 97 ': {offset: 0.25},
-                                  12: {offset: 0.25}
-                                },
-                        };
+                      }
+
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div_1'));
+        chart.draw(data, options);
+      }
+
+
+      function drawCategoryChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Agency Category');
+        data.addColumn('number', 'Share of Property Tax Bill');
+        data.addRows({{ category_data_table|safe }});
+
+        // Set chart options
+        var options = {'title':'How Your Tax Bill gets Split Up',
+                       'width':1200,
+                       'height':600,
+                      }
+
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div_2'));
         chart.draw(data, options);
       }
     </script>
@@ -46,12 +64,23 @@
 
       {% block content %}
           <div class="page-content">
+                <div>
+                  <h3> We all know what a property tax bill looks like </h3>
+                  <h3> It shows you the amount you owe for your next payment (about ${{payment}}), the tax rate ({{tax_code_rate}}%) and a list of government agencies that receive your money. </h3>
+                  <h2> But where do those numbers come from? {{tax_code_rate}}% of what? </h2>
+                </div>
+
+                <br>
+                <br>
+
+
+                  <div>
                   <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
-                  <h2> Using this tax code, we can tranlsate the rate you see on your property tax bill into
+                  <h2> Using this tax code, we can translate the rate you see on your property tax bill into
                        the percentage of <b>full market value</b> that homeowners in your neightborhood pay every year.
                   </h2>
                   <h3> On average, you and your neighbors pay <b>{{ effective_property_tax_rate }}%</b>
-                       of your homes' market value annually in property taxes.
+                       of your home's market value annually in property taxes.
                   </h3>
 
                   <br>
@@ -65,8 +94,9 @@
 
                   <body>
                     <!--Div that will hold the pie chart-->
-                    <div id="chart_div"></div>
+                    <div id="chart_div_1"></div>
                   </body>
+
                   </div>
               </div>
 
@@ -75,16 +105,22 @@
           <div>
               <h1> Wow! That's a lot to get a handle on. Let's simplify it a bit. </h1>
 
+              <body>
+                <!--Div that will hold the pie chart-->
+                <div id="chart_div_2"></div>
+              </body>
                                 <br>
                                 <br>
-              <h3> Each year, {{ effective_property_tax_rate }} cents of every dollar of your home's value goes to fund public schools, parks
+
+              <h3> Each year, {{ effective_property_tax_rate }} cents out of every dollar of your home's value go to fund public schools, parks
                   and other essential government services.
               </h3>
 
-              {% firstof var1 var2 var3 "blah" %}
 
 
-              <p> See how your neighborhood compares to others in your township </p>
+
+              <p> Translating your tax bill to a percentage of value allows us to compare tax bills across communities, apples-to-apples. 
+              <p>See how your neighborhood compares to others in your township </p>
           </div>
 
           <br>
@@ -92,7 +128,7 @@
 
           <div>
 
-              <h3> While a homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually,
+              <h3> A homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually and
                    the {{ township }} Township average is {{ township_etr }}%
               </h3>
               <h3> In exchange, residents of {{ township }} enjoy high quality public services </h3>
@@ -101,6 +137,11 @@
 
           <div>
 
+          </div>
+
+
+          <div>
+              Over time, things change. While you pay a rate of {{ effective_property_tax_rate }}% today,
           </div>
 
       {% endblock %}

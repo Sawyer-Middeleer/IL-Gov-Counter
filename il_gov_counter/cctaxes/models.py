@@ -12,7 +12,7 @@ import io
 class PropAddress(models.Model):
     pin = models.CharField(max_length=14)
     tax_code = models.CharField(max_length=6)
-    value = models.IntegerField(default=0)
+    value = models.CharField(max_length=10)
     # tax_code needs to come from scraping the assessor's website
     def __str__(self):
         return self.pin
@@ -28,6 +28,8 @@ class PropAddress(models.Model):
         bsObj = BeautifulSoup(html)
         tax_code_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropInfoTaxcode")
         self.tax_code = tax_code_obj.get_text()
+        value_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropCharMktValCurrYear")
+        self.value = value_obj.get_text()
         self.save()
 
 # from tax_rates csv
@@ -45,6 +47,8 @@ class TaxCode(models.Model):
     effective_property_tax_rate = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     tax_rate_proportion = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     etr_share = models.DecimalField(default=0, decimal_places=3, max_digits=6)
+    agency_type = models.CharField(default="County", max_length=50)
+    category_etr = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     user_address = models.ForeignKey(PropAddress, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -55,7 +59,7 @@ class TaxCode(models.Model):
         return reverse('model-detail-view', args=[str(self.id)])
 
     def read_tax_rates_data(self):
-        with open(r'C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\il_gov_counter\cctaxes\static\cctaxes\oak_park.csv', encoding='utf-8-sig') as f:
+        with open(r'C:\Users\midde\OneDrive\Documents\GitHub\IL-Gov-Counter\il_gov_counter\cctaxes\static\cctaxes\tax_rates_full.csv', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[0] != 'Tax Year':
@@ -72,7 +76,9 @@ class TaxCode(models.Model):
                         equalization_factor=row[9],
                         effective_property_tax_rate=row[10],
                         tax_rate_proportion=row[11],
-                        etr_share=row[12]
+                        etr_share=row[12],
+                        agency_type=row[13],
+                        category_etr=row[14]
                     )
                 # creates a tuple of the new object or
                 # current object and a boolean of if it was created
