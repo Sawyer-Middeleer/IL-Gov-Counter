@@ -41,7 +41,6 @@ Fiona==1.8.4
 folium==0.9.0
 foursquare==1!2019.2.16
 future==0.17.1
-GDAL==2.3.3
 geographiclib==1.49
 geopandas==0.4.1
 geopy==1.19.0
