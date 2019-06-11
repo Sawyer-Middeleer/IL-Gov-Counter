@@ -14,3 +14,4 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'il_gov_counter.settings')
 
 application = get_wsgi_application()
+application = DjangoWhiteNoise(application)
