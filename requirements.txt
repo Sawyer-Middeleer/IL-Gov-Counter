@@ -54,6 +54,7 @@ google-cloud-storage==1.15.0
 google-resumable-media==0.3.2
 googleapis-common-protos==1.5.10
 googledrivedownloader==0.4
+gunicorn==19.9.0
 html5lib==1.0.1
 httplib2==0.12.3
 hyperlink==19.0.0
