@@ -9,7 +9,7 @@
     <script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart', 'bar']});
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawAgencyChart);
@@ -27,7 +27,7 @@
         data.addRows({{ tax_data_table|safe }});
 
         // Set chart options
-        var options = {'title':'How Your Tax Bill gets Split Up',
+        var options = {'title':'',
                        'width':1200,
                        'height':600,
                       }
@@ -48,7 +48,7 @@
         data.addRows({{ category_data_table|safe }});
 
         // Set chart options
-        var options = {'title':'How Your Tax Bill gets Split Up',
+        var options = {'title':'',
                        'width':1200,
                        'height':600,
                       }
@@ -61,156 +61,198 @@
 
       function drawTaxCodeChangeChart() {
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Year');
-        data.addColumn('number', 'Property Tax Rate');
-        data.addRows({{ category_data_table|safe }});
+        var data = google.visualization.arrayToDataTable([
+            ['', '2014', '2017'],
+            ['Your Tax Code', {{effective_property_tax_rate_14|safe}}, {{effective_property_tax_rate|safe}}],
+            ['Cook County Average', {{cook_county_avg_etr_14|safe}}, {{cook_county_avg_etr}}]
+          ]);
 
-        // Set chart options
-        var options = {'title':'Property Tax Rate Change in Your Tax Code',
-                       'width':500,
-                       'height':600,
-                      }
+          var options = {
+            chart: {
+              title: 'Tax Rate Change 2014-2017',
+            }
+          };
 
+          var chart = new google.charts.Bar(document.getElementById('chart_div_3'));
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
-        chart.draw(data, options);
-      }
+          chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
     </script>
+
     {% endblock %}
 
   <body>
 
       {% block content %}
+
           <div class="page-content">
-                <div>
+                <div class='main' id='section1'>
                   <h3> We all know what a property tax bill looks like </h3>
                   <h3> It shows you the amount you owe for your next payment (about ${{payment}}), your community's tax rate ({{tax_code_rate}}%) and a list of government agencies that receive your money. </h3>
                   <h2> But where do those numbers come from? {{tax_code_rate}}% of what? </h2>
+                  <h3> <a href='#section2' class='btn btn-primary btn-lg'> Learn more </a> </h3>
                 </div>
 
                 <br>
                 <br>
 
 
-                  <div>
+                  <div class='main' id='section2'>
                   <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
-                  <h2> Using this tax code, we can translate the rate you see on your property tax bill into
+                  <h2> Using this tax code, we can translate the rate you see on your property tax bill into an adjusted tax rate that reflects
                        the percentage of <b>full market value</b> that homeowners in your neighborhood pay every year.
                   </h2>
-                  <h3> On average, you and your neighbors pay <b>{{ effective_property_tax_rate }}%</b>
+                  <h3> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
                        of your home's market value annually in property taxes.
                   </h3>
-
                   <br>
                   <br>
-
                   <h2> So where does all of this money go? </h2>
+                  <br>
+                  <h3> <a href='#section1' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section3' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-                  <div>
+                  <br>
+                  <br>
 
+                  <div class='main' id='section3'>
                   <h3> Your property taxes fund <b>{{ body_count }}</b> different local government bodies.</h3>
-
                   <body>
                     <!--Div that will hold the pie chart-->
                     <div id="chart_div_1"></div>
                   </body>
-
+                  <h1> Wow! That's a lot to get a handle on. Let's simplify it a bit. </h1>
+                  <h3> <a href='#section2' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section4' class='btn btn-primary btn-lg'> Next </a> </h3>
                   </div>
-              </div>
 
-                  <!-- <a href="{% url 'tax-impact' %}" onclick="prop_id.submit();"> How does this affect me? </a> -->
+                  <br>
+                  <br>
 
-          <div>
-              <h1> Wow! That's a lot to get a handle on. Let's simplify it a bit. </h1>
+                  <div class='main' id='section4'>
+                  <body>
+                    <!--Div that will hold the pie chart-->
+                    <div id="chart_div_2"></div>
+                  </body>
+                  <br>
+                  <br>
+                  <h3> <a href='#section3' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section5' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-              <body>
-                <!--Div that will hold the pie chart-->
-                <div id="chart_div_2"></div>
-              </body>
-                                <br>
-                                <br>
+                  <br>
+                  <br>
 
-              <h3> Each year, {{ effective_property_tax_rate }} cents out of every dollar of your home's value go to fund public schools, parks
-                  and other essential government services.
-              </h3>
+                  <div class='main' id='section5'>
 
+                  <h3> Each year, {{ effective_property_tax_rate }} cents out of every dollar of your home's value go to fund public schools, parks
+                      and other essential government services.
+                  </h3>
+                  <h2> Translating your tax bill to a percentage of market value allows us to compare tax bills across communities, apples-to-apples.</h2>
+                  <h3> <a href='#section4' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section6' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
+                  <br>
+                  <br>
 
+                  <div class='main' id='section6'>
+                  <h3> In exchange for paying property taxes, residents of {{ township }} enjoy high quality public services. However, tax rates can vary a lot within the same township. </h3>
+                  <p> See how your neighborhood compares to others in your township </p>
+                  <h3> <a href='#section5' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section7' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-              <p> Translating your tax bill to a percentage of market value allows us to compare tax bills across communities, apples-to-apples.</p>
+                  <br>
+                  <br>
 
-              <p> See how your neighborhood compares to others in your township </p>
-          </div>
+                  <div class='main' id='section7'>
+                  <h3> Property taxes in {{ township }} range from {{ township_min }}% to {{ township_max }}% </h3>
+                  <br>
+                  <br>
+                    {% if greater_township %}
+                      <h2> You pay more than average in {{ township }} </h2>
+                    {% elif lesser_township %}
+                      <h2> You pay less than average in {{ township }} </h2>
+                    {% else %}
+                      <h2> You pay an average amount in {{ township }} </h2>
+                    {% endif %}
+                  <br>
+                  <br>
+                  <p> How do your taxes compare to elsewhere in Cook County? </p>
+                  <h3> <a href='#section6' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section8' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-          <br>
-          <br>
+                  <br>
+                  <br>
 
-          <div>
+                  <div class='main' id='section8'>
+                    <h3>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h3>
+                  <br>
+                  <br>
+                    {% if greater_county %}
+                      <h2> So you pay more than average in your county </h2>
+                    {% elif lesser_county %}
+                      <h2> So you pay less than average in your county </h2>
+                    {% else %}
+                      <h2> So you pay an average amount in your county </h2>
+                    {% endif %}
+                  <br>
+                  <br>
+                  <h3> <a href='#section7' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section9' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-              <h3> A homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually, while
-                   the {{ township }} Township average is {{ township_etr }}%
-              </h3>
-              <h3> In exchange for paying property taxes, residents of {{ township }} enjoy high quality public services </h3>
-              <h3> Property taxes in your township range from {{ township_min }}% to {{ township_max }}% </h3>
+                  <br>
+                  <br>
 
-              <p> How do your taxes compare to elsewhere in Cook County? </p>
-          </div>
+                  <div class='main' id='section9'>
+                    <h3> Since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
+                         your tax bill may still be higher.
+                    </h3>
+                  <br>
+                  <br>
+                    <h3>  Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.</h3>
+                  <br>
+                    <p> See how your taxes have changed over time </p>
+                  <br>
+                  <h3> <a href='#section8' class='btn btn-primary btn-lg'> Back </a> </h3>
+                  <h3> <a href='#section10' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-          <div>
-            <h3>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h3>
-          </div>
+                  <br>
+                  <br>
 
-          <div>
-            {% if greater_township %}
-              <h2> You pay more than average in your township </h2>
-            {% elif lesser_township %}
-              <h2> You pay less than average in your township </h2>
-            {% else %}
-              <h2> You pay an average amount in your township </h2>
-            {% endif %}
-          </div>
+                  <div class='main' id='section10'>
+                  <p> Over the last three years, your taxes have gone down {{ tax_code_change }}%. </p>
+                  <p> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </p>
 
-          <div>
-            {% if greater_county %}
-              <h2> You pay more than average in your county </h2>
-            {% elif lesser_county %}
-              <h2> You pay less than average in your county </h2>
-            {% else %}
-              <h2> You pay an average amount in your county </h2>
-            {% endif %}
-          </div>
+                  <br>
+                  <br>
 
-          <div>
-            <h3> Since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
-                 your tax bill may still be higher.
-            </h3>
-          </div>
-          <br>
-          <br>
-          <div>
-              Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.
-          </div>
-          <br>
-          <br>
-          <div>
-          <p> Over the last three years, your taxes have gone down {{ tax_code_change }}%. </p>
-          <p> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </p>
-          </div>
+                  <body>
+                    <!--Div that will hold the pie chart-->
+                    <div id="chart_div_3" style="width: 400px; height: 500px;"></div>
+                  </body>
 
-          <br>
-          <br>
+                    <h2> The change may not seem big, but it adds up! </h2>
+                    <h3> <a href='#section9' class='btn btn-primary btn-lg'> Back </a> </h3>
+                    <h3> <a href='#section11' class='btn btn-primary btn-lg'> Next </a> </h3>
+                  </div>
 
-          <body>
-            <!--Div that will hold the pie chart-->
-            <div id="chart_div_3"></div>
-          </body>
+                  <br>
+                  <br>
 
-          <div>
-            <h3> </h3>
-          </div>
+                  <div class='main' id='section11'>
+                    <h3> Thanks for taking the time to learn about your taxes with Property Tax 1-2-3! If this resource was helpful, please share with your friends and neighbors. </h3>
+                    <br>
+                    <h3> Not satisfied with your tax situation? Think your community should spend on better services?
+                         Call your representatives, city council or mayor, and don't forget to vote in your local elections! </h3>
+                    <h3> <a href='#' class='btn btn-primary btn-lg'> Search Another Address </a> </h3>
+                  </div>
+
 
       {% endblock %}
 

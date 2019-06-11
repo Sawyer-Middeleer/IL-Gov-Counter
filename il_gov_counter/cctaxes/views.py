@@ -80,6 +80,7 @@ def results(request, id):
         codes.add(code.tax_code)
 
     etr = round(prop_tax_code_17[0].effective_property_tax_rate, 1)
+    etr_14 = round(prop_tax_code_14[0].effective_property_tax_rate, 1)
 
     home_value = re.sub('[^0-9]','', property_address.value)
     payment = float(etr)/100*float(home_value)*.5
@@ -92,14 +93,16 @@ def results(request, id):
     tax_code_change = (prop_tax_code_17[0].tax_code_rate - prop_tax_code_14[0].tax_code_rate) / prop_tax_code_14[0].tax_code_rate * 100
     county_change = (cook_county_avg_etr - cook_county_avg_etr_14) / cook_county_avg_etr_14 * 100
 
+
+
     context = {
                'prop_id':property_address.id,
                'prop_val':home_value,
                'prop_tax_code':property_address.tax_code,
                'tax_code_rate':round(prop_tax_code_17[0].tax_code_rate,1),
-               'tax_code_rate_14':round(prop_tax_code_14[0].tax_code_rate,1),
                'body_count':prop_tax_code_17[0].taxing_body_count,
                'effective_property_tax_rate':etr,
+               'effective_property_tax_rate_14':etr_14,
                'payment':round(int(payment),-2),
                'township':prop_tax_code_17[0].assessment_district,
                'tax_data_table':tax_table,
@@ -119,7 +122,7 @@ def results(request, id):
                'lesser_county':prop_tax_code_17[0].effective_property_tax_rate < all_codes.aggregate(Avg('effective_property_tax_rate'))['effective_property_tax_rate__avg'],
                'tax_code_change':round(tax_code_change,1),
                'county_change':round(county_change,1),
-               
+
                'form':form,
                }
 
