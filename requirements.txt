@@ -79,7 +79,6 @@ matplotlib==3.0.3
 MechanicalSoup==0.11.0
 mechanize==0.4.2
 mistune==0.8.4
-mkl-fft==1.0.10
 mkl-random==1.0.2
 mock==3.0.5
 more-itertools==4.3.0
