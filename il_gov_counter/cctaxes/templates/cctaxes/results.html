@@ -14,6 +14,7 @@
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawAgencyChart);
       google.charts.setOnLoadCallback(drawCategoryChart);
+      google.charts.setOnLoadCallback(drawTaxCodeChangeChart);
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
@@ -57,6 +58,26 @@
         var chart = new google.visualization.PieChart(document.getElementById('chart_div_2'));
         chart.draw(data, options);
       }
+
+      function drawTaxCodeChangeChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Year');
+        data.addColumn('number', 'Property Tax Rate');
+        data.addRows({{ category_data_table|safe }});
+
+        // Set chart options
+        var options = {'title':'Property Tax Rate Change in Your Tax Code',
+                       'width':500,
+                       'height':600,
+                      }
+
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
+        chart.draw(data, options);
+      }
     </script>
     {% endblock %}
 
@@ -66,7 +87,7 @@
           <div class="page-content">
                 <div>
                   <h3> We all know what a property tax bill looks like </h3>
-                  <h3> It shows you the amount you owe for your next payment (about ${{payment}}), the tax rate ({{tax_code_rate}}%) and a list of government agencies that receive your money. </h3>
+                  <h3> It shows you the amount you owe for your next payment (about ${{payment}}), your community's tax rate ({{tax_code_rate}}%) and a list of government agencies that receive your money. </h3>
                   <h2> But where do those numbers come from? {{tax_code_rate}}% of what? </h2>
                 </div>
 
@@ -77,7 +98,7 @@
                   <div>
                   <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
                   <h2> Using this tax code, we can translate the rate you see on your property tax bill into
-                       the percentage of <b>full market value</b> that homeowners in your neightborhood pay every year.
+                       the percentage of <b>full market value</b> that homeowners in your neighborhood pay every year.
                   </h2>
                   <h3> On average, you and your neighbors pay <b>{{ effective_property_tax_rate }}%</b>
                        of your home's market value annually in property taxes.
@@ -119,8 +140,9 @@
 
 
 
-              <p> Translating your tax bill to a percentage of value allows us to compare tax bills across communities, apples-to-apples. 
-              <p>See how your neighborhood compares to others in your township </p>
+              <p> Translating your tax bill to a percentage of market value allows us to compare tax bills across communities, apples-to-apples.</p>
+
+              <p> See how your neighborhood compares to others in your township </p>
           </div>
 
           <br>
@@ -128,20 +150,66 @@
 
           <div>
 
-              <h3> A homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually and
+              <h3> A homeowner in your area will pay {{ effective_property_tax_rate }}% of their home's value annually, while
                    the {{ township }} Township average is {{ township_etr }}%
               </h3>
-              <h3> In exchange, residents of {{ township }} enjoy high quality public services </h3>
+              <h3> In exchange for paying property taxes, residents of {{ township }} enjoy high quality public services </h3>
               <h3> Property taxes in your township range from {{ township_min }}% to {{ township_max }}% </h3>
+
+              <p> How do your taxes compare to elsewhere in Cook County? </p>
           </div>
 
           <div>
-
+            <h3>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h3>
           </div>
 
+          <div>
+            {% if greater_township %}
+              <h2> You pay more than average in your township </h2>
+            {% elif lesser_township %}
+              <h2> You pay less than average in your township </h2>
+            {% else %}
+              <h2> You pay an average amount in your township </h2>
+            {% endif %}
+          </div>
 
           <div>
-              Over time, things change. While you pay a rate of {{ effective_property_tax_rate }}% today,
+            {% if greater_county %}
+              <h2> You pay more than average in your county </h2>
+            {% elif lesser_county %}
+              <h2> You pay less than average in your county </h2>
+            {% else %}
+              <h2> You pay an average amount in your county </h2>
+            {% endif %}
+          </div>
+
+          <div>
+            <h3> Since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
+                 your tax bill may still be higher.
+            </h3>
+          </div>
+          <br>
+          <br>
+          <div>
+              Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.
+          </div>
+          <br>
+          <br>
+          <div>
+          <p> Over the last three years, your taxes have gone down {{ tax_code_change }}%. </p>
+          <p> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </p>
+          </div>
+
+          <br>
+          <br>
+
+          <body>
+            <!--Div that will hold the pie chart-->
+            <div id="chart_div_3"></div>
+          </body>
+
+          <div>
+            <h3> </h3>
           </div>
 
       {% endblock %}
