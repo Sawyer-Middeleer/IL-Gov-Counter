@@ -143,7 +143,6 @@
                     <br>
                     <br>
                     <h1> A majority of your tax bill funds primary and secondary schools, but a lot goes to city, county and township governments as well. </h1>
-                    <h2> Your tax code may allocate a large amount of funding to other agencies as well. </h2>
 
                   <body>
                     <div id="chart_div_2"></div>
@@ -189,6 +188,10 @@
                     {% endif %}
                   <br>
                   <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
                   <h3> Click next to see How your taxes compare to elsewhere in Cook County </h3>
                   <br>
                   <h3> <a href='#section5' class="btn btn-outline-primary"> Back </a> </h3>
@@ -201,17 +204,20 @@
                   <div class='main' id='section7'>
                     <br>
                     <br>
-                    <h3>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h3>
+                    <h1>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h1>
+                  <br>
+                  <br>
                   <br>
                   <br>
                     {% if greater_county %}
                       <h2> Therefore, your tax rate is higher than average, compared to the entire county </h2>
                     {% elif lesser_county %}
-                      <h2> Therefore, your tax rate is lower than average, compared to the entire countyy </h2>
+                      <h2> Therefore, your tax rate is lower than average, compared to the entire county </h2>
                     {% else %}
                       <h2> Therefore, your tax rate is right about average, compared to the entire county </h2>
                     {% endif %}
                   <br>
+                  <h2> Keep going to find out whether your taxers have gone up or down over the past three years. </h2>
                   <br>
                   <h3> <a href='#section6' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section8' class="btn btn-primary"> Next </a> </h3>
@@ -223,14 +229,16 @@
                   <div class='main' id='section8'>
                     <br>
                     <br>
-                    <h2> Remember, since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
+                    <h1> Remember, since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
                          your tax bill may still be higher.
-                    </h2>
+                    </h1>
                   <br>
                   <br>
                     <h3> Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.</h3>
                   <br>
-                    <h3> See how your taxes have changed over time </h3>
+                  <br>
+                  <br>
+                    <h1> See how your taxes have changed over time </h1>
                   <br>
                   <h3> <a href='#section7' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section9' class="btn btn-primary"> Next </a> </h3>
@@ -242,7 +250,7 @@
                   <div class='main' id='section9'>
                     <br>
                     <br>
-                  <h1> Over the last three years, your taxes have gone down {{ tax_code_change }}%. </h1>
+                  <h1> Over the last three years, your taxe rate has gone down {{ tax_code_change }}%. </h1>
                   <h3> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </h3>
                   <br>
                   <body class="content">
@@ -250,6 +258,8 @@
                   </body>
 
                     <h2> The change may not seem big, but it adds up! </h2>
+                    <br>
+                    <br>
                     <h3> <a href='#section8' class="btn btn-outline-primary"> Back </a> </h3>
                     <h3> <a href='#section10' class="btn btn-primary"> Next </a> </h3>
                   </div>
