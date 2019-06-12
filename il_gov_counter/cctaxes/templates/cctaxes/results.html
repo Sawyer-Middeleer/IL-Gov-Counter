@@ -102,16 +102,19 @@
                   <div class='main' id='section2'>
                     <br>
                     <br>
-                      <div class="card border-primary mb-3">
+
                         <div class="card text-white bg-success mb-3">
                         <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
                         </div>
                         <h2> Using this tax code, we can translate the rate you see on your property tax bill into an adjusted tax rate that reflects
                              the percentage of <b>full market value</b> that homeowners in your neighborhood pay every year.
                         </h2>
-                        <h3> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
+                        <br>
+                        <br>
+                        <div class="card border-primary mb-3">
+                        <h1> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
                              of your home's market value annually in property taxes.
-                        </h3>
+                        </h1>
                         </div>
                   <br>
                   <br>
@@ -144,15 +147,14 @@
                   <div class='main' id='section4'>
                     <br>
                     <br>
-                    <h1> A majority of your tax bill funds primary and secondary schools, but a lot goes to city, county and township governments as well. </h1>
+                    <h1> A majority of your tax bill funds primary and secondary schools. A lot also goes to your town and county governments, as well as to other vital public service providers. </h1>
 
                   <body>
                     <div id="chart_div_2"></div>
                   </body>
+                  <br>
+                  <br>
 
-                  <h3> Each year, {{ effective_property_tax_rate }} cents out of every dollar of your home's value go to fund public schools, parks
-                       and other essential government services.
-                  </h3>
                   <h3> <a href='#section3' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section5' class="btn btn-primary"> Next </a> </h3>
 
@@ -164,11 +166,15 @@
                   <div class='main' id='section5'>
                     <br>
                     <br>
-                  <h2> Translating your tax bill to a percentage of market value allows us to compare tax bills across communities, apples-to-apples.</h2>
+                    <div class="card text-white bg-success mb-3">
+                      <h2> <b>Translating your tax bill to a percentage of market value allows us to compare tax bills across communities, apples-to-apples.</b></h2>
+                    </div>
                   <br>
-                  <h3> In exchange for paying property taxes, residents of {{ township }} enjoy high quality public services. However, tax rates can vary a lot within the same township. </h3>
+                  <h2> In exchange for paying property taxes, residents of {{ township }} enjoy high quality public services. However, tax rates can vary a lot within the same township. </h2>
                     <br>
-                  <h3> Keep going to see how your neighborhood compares to others in your township </h3>
+                    <br>
+                    <br>
+                  <h2> Keep going to see how your neighborhood compares to others in your township </h2>
                   <br>
                   <h3> <a href='#section4' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section6' class="btn btn-primary"> Next </a> </h3>
@@ -178,6 +184,7 @@
                   <div class='main' id='section6'>
                     <br>
                     <br>
+                    <div class="card border-primary mb-3">
                   <h2> Property taxes in {{ township }} range from {{ township_min }}% to {{ township_max }}% </h2>
                   <br>
                   <br>
@@ -189,6 +196,7 @@
                       <h2> In your tax code, you pay an average amount in {{ township }} </h2>
                     {% endif %}
                   <br>
+                  </div>
                   <br>
                   <br>
                   <br>
@@ -222,7 +230,10 @@
                        the amount you pay may still be higher.
                   </h2>
                   </div>
-                  <h3> Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.</h3>
+                  <br>
+                  <br>
+                  <br>
+                  <h3> While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago. Click next to learn more.</h3>
                   <br>
                   <h3> <a href='#section6' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section8' class="btn btn-primary"> Next </a> </h3>
@@ -240,7 +251,7 @@
                     <div id="chart_div_3" style="width: 400px; height: 450px;"></div>
                   </body>
 
-                    <h2> The change may not seem big, but it adds up! </h2>
+                    <h1> The change may not seem big, but it adds up! </h1>
                     <br>
                     <h3> <a href='#section7' class="btn btn-outline-primary"> Back </a> </h3>
                     <h3> <a href='#section9' class="btn btn-primary"> Next </a> </h3>
@@ -256,12 +267,15 @@
                     <br>
                     <br>
                     <br>
-                    <div class="card text-white bg-success mb-3">
+                    <div class="card text-white bg-primary mb-3">
                     <h1> Thanks for taking the time to learn about your taxes with Property Tax 1-2-3! If this resource was helpful, please share with your friends and neighbors. </h1>
-                    <br>
-                    <h2> Not satisfied with your tax situation? Think your community should spend on better services?
-                         Call your representatives, city council or mayor, and don't forget to vote in your local elections! </h2>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <h1> Not satisfied with your tax situation? Think your community should spend on better services?
+                         Call your representatives, city council or mayor, and don't forget to vote in your local elections! </h1>
+
                       <br>
                       <br>
                       <br>
