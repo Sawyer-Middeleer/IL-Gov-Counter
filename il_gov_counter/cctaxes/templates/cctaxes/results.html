@@ -88,13 +88,11 @@
           <div class="page-content">
                 <div class='main' id='section1'>
                   <br>
-                  <h3> We all know what a property tax bill looks like </h3>
+                  <h2> We all know what a property tax bill looks like </h2>
+                  <br>
                   <h3> It shows you the amount you owe for your next payment (about ${{payment}}), your community's tax rate ({{tax_code_rate}}%) and a list of government agencies that receive your money. </h3>
                   <h2> But where do those numbers come from? {{tax_code_rate}}% of what? </h2>
-                  <h3> <a href='#section2' class="btn btn-primary"> Learn more </a> </h3>
-                  <br>
-                  <br>
-                  <br>
+                  <h3> <a href='#section2' class="btn btn-primary"> <b>Learn more</b> </a> </h3>
                 </div>
 
                 <br>
@@ -104,13 +102,17 @@
                   <div class='main' id='section2'>
                     <br>
                     <br>
-                  <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
-                  <h2> Using this tax code, we can translate the rate you see on your property tax bill into an adjusted tax rate that reflects
-                       the percentage of <b>full market value</b> that homeowners in your neighborhood pay every year.
-                  </h2>
-                  <h3> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
-                       of your home's market value annually in property taxes.
-                  </h3>
+                      <div class="card border-primary mb-3">
+                        <div class="card text-white bg-success mb-3">
+                        <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
+                        </div>
+                        <h2> Using this tax code, we can translate the rate you see on your property tax bill into an adjusted tax rate that reflects
+                             the percentage of <b>full market value</b> that homeowners in your neighborhood pay every year.
+                        </h2>
+                        <h3> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
+                             of your home's market value annually in property taxes.
+                        </h3>
+                        </div>
                   <br>
                   <br>
                   <h2> So where does all of this money go? </h2>
@@ -205,18 +207,22 @@
                     <br>
                     <br>
                     <h1>The average homeowner in Cook County pays {{ cook_county_avg_etr }}% of their home's value in taxes annually.</h1>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                    <br>
+                    <br>
                     {% if greater_county %}
-                      <h2> Therefore, your tax rate is higher than average, compared to the entire county </h2>
+                      <h2> Therefore, your tax rate is higher than average compared to the entire county </h2>
                     {% elif lesser_county %}
-                      <h2> Therefore, your tax rate is lower than average, compared to the entire county </h2>
+                      <h2> Therefore, your tax rate is lower than average compared to the entire county </h2>
                     {% else %}
-                      <h2> Therefore, your tax rate is right about average, compared to the entire county </h2>
+                      <h2> Therefore, your tax rate is right about average compared to the entire county </h2>
                     {% endif %}
                   <br>
+                  <div class="alert alert-dismissible alert-secondary">
+                  <h2> Remember, since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
+                       the amount you pay may still be higher.
+                  </h2>
+                  </div>
+                  <h3> Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.</h3>
                   <br>
                   <h3> <a href='#section6' class="btn btn-outline-primary"> Back </a> </h3>
                   <h3> <a href='#section8' class="btn btn-primary"> Next </a> </h3>
@@ -227,29 +233,8 @@
 
                   <div class='main' id='section8'>
                     <br>
-                    <br>
-                    <h1> Remember, since we are comparing tax rates as percentages of property value, even if you have a lower rate than someone in another town,
-                         your tax bill may still be higher.
-                    </h1>
-                  <br>
-                  <br>
-                    <h3> Over time, things change. While you pay {{ effective_property_tax_rate }}% of your home's value today, your tax bills probably looked different a few years ago.</h3>
-                  <br>
-                  <br>
-                  <br>
-                    <h1> See how your taxes have changed over time </h1>
-                  <br>
-                  <h3> <a href='#section7' class="btn btn-outline-primary"> Back </a> </h3>
-                  <h3> <a href='#section9' class="btn btn-primary"> Next </a> </h3>
-                  </div>
-
-                  <br>
-                  <br>
-
-                  <div class='main' id='section9'>
-                    <br>
-                  <h1> Over the last three years, your taxe rate has gone down {{ tax_code_change }}%. </h1>
-                  <h3> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </h3>
+                  <h2> Over the last three years, your taxe rate has gone down {{ tax_code_change }}%. </h2>
+                  <h2> During this same period, taxes as a percentage of average home values across the county have fallen {{ county_change }}%. </h2>
                   <br>
                   <body class="content">
                     <div id="chart_div_3" style="width: 400px; height: 450px;"></div>
@@ -257,21 +242,26 @@
 
                     <h2> The change may not seem big, but it adds up! </h2>
                     <br>
-                    <h3> <a href='#section8' class="btn btn-outline-primary"> Back </a> </h3>
-                    <h3> <a href='#section10' class="btn btn-primary"> Next </a> </h3>
+                    <h3> <a href='#section7' class="btn btn-outline-primary"> Back </a> </h3>
+                    <h3> <a href='#section9' class="btn btn-primary"> Next </a> </h3>
                   </div>
 
                   <br>
                   <br>
 
-                  <div class='main' id='section10'>
+                  <div class='main' id='section9'>
                     <br>
                     <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="card text-white bg-success mb-3">
                     <h1> Thanks for taking the time to learn about your taxes with Property Tax 1-2-3! If this resource was helpful, please share with your friends and neighbors. </h1>
                     <br>
                     <h2> Not satisfied with your tax situation? Think your community should spend on better services?
                          Call your representatives, city council or mayor, and don't forget to vote in your local elections! </h2>
-                      <br>
+                    </div>
                       <br>
                       <br>
                       <br>
