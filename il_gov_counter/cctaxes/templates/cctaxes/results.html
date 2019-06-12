@@ -69,7 +69,7 @@
 
           var options = {
             chart: {
-              title: 'Tax Rate Change 2014-2017',
+              title: '',
             }
           };
 
@@ -102,7 +102,7 @@
                     <br>
                     <br>
 
-                        <div class="card text-white bg-success mb-3">
+                        <div class="card border-primary mb-3">
                         <h2><b> Your address is located in tax code {{ prop_tax_code }} </b></h2>
                         </div>
                         <h2> Using this tax code, we can translate the rate you see on your property tax bill into an adjusted tax rate that reflects
@@ -110,11 +110,11 @@
                         </h2>
                         <br>
                         <br>
-                        <div class="card border-primary mb-3">
+
                         <h1> On average, you pay <b>{{ effective_property_tax_rate }}%</b>
                              of your home's market value annually in property taxes.
                         </h1>
-                        </div>
+
                   <br>
                   <br>
                   <h2> So where does all of this money go? </h2>
@@ -184,6 +184,7 @@
                     <br>
                     <br>
                     <div class="card border-primary mb-3">
+                        <br>
                   <h2> Property taxes in {{ township }} range from {{ township_min }}% to {{ township_max }}% </h2>
                   <br>
                   <br>
