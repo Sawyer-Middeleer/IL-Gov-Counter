@@ -1,5 +1,5 @@
 
-
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,6 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="https://bootswatch.com/4/minty/bootstrap.css" media="screen">
     <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <script>
 
      var _gaq = _gaq || [];
@@ -62,63 +63,6 @@
     });
 
     </script>
-
-    <style>
-    html, body {
-      overflow: hidden;
-    }
-    #section1 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section2 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section3 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section4 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section5 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section6 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section7 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section8 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section9 {
-      height: 800px;
-      background-color: white;
-    }
-
-    #section10 {
-      height: 800px;
-      background-color: white;
-    }
-
-
-    </style>
 
     {% block head %}
     {% endblock %}
