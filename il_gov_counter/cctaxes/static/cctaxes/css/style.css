@@ -1,4 +1,61 @@
-======
+<<<<<<< HEAD
+*::selection {
+  background-color: #d5ede0;
+}
+
+h1, h2 {
+  color:#2bbc6f;
+}
+
+#section1 {
+  height: 800px;
+  background-color: white;
+}
+
+#section2 {
+  height: 800px;
+  background-color: white;
+}
+
+#section3 {
+  height: 800px;
+  background-color: white;
+}
+
+#section4 {
+  height: 800px;
+  background-color: white;
+}
+
+#section5 {
+  height: 800px;
+  background-color: white;
+}
+
+#section6 {
+  height: 800px;
+  background-color: white;
+}
+
+#section7 {
+  height: 800px;
+  background-color: white;
+}
+
+#section8 {
+  height: 800px;
+  background-color: white;
+}
+
+#section9 {
+  height: 800px;
+  background-color: white;
+}
+
+#section10 {
+  height: 800px;
+  background-color: white;
+=======
 li a {
     color: green;
 >>>>>>> parent of 7101e6d... css fixes
