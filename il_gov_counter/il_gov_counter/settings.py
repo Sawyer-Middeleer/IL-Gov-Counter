@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+p$_p09gl)^5-a7+9ok#3=jq5%rmyemab2s+w!$5qw5bs^b0=o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
@@ -129,5 +129,5 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-     os.path.join(BASE_DIR, 'static'),
- )
+    os.path.join(BASE_DIR, 'static'),
+)
