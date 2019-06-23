@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *::selection {
   background-color: #d5ede0;
 }
@@ -54,4 +55,8 @@ h1, h2 {
 #section10 {
   height: 800px;
   background-color: white;
+=======
+li a {
+    color: green;
+>>>>>>> parent of 7101e6d... css fixes
 }
