@@ -15,10 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+p$_p09gl)^5-a7+9ok#3=jq5%rmyemab2s+w!$5qw5bs^b0=o'
 
@@ -39,8 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-#    'widget_tweaks',
-#    'import_export',
+    'widget_tweaks',
+    'import_export',
 ]
 
 MIDDLEWARE = [

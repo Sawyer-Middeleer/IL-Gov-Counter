@@ -24,7 +24,6 @@ constantly==15.1.0
 cryptography==2.6.1
 cssselect==1.0.3
 cycler==0.10.0
--e git+https://github.com/Yelp/dataset-examples.git@624534d9851c3c5440f954d3bfada53a36642096#egg=dataset_examples
 decorator==4.4.0
 defusedxml==0.5.0
 descartes==1.1.0
