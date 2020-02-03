@@ -23,12 +23,12 @@ class PropAddress(models.Model):
 
     def get_tax_code(self):
         """Scrapes the Cook County Assessor's website to grab the PIN's tax code"""
-        with urllib.request.urlopen('http://www.cookcountyassessor.com/Property.aspx?mode=details&pin='+self.pin) as url:
+        with urllib.request.urlopen('https://www.cookcountyassessor.com/pin/'+self.pin) as url:
             html = url.read()
         bsObj = BeautifulSoup(html)
-        tax_code_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropInfoTaxcode")
+        tax_code_obj = bsObj.find_all("span", {"class":"detail-row--detail large"})[3]
         self.tax_code = tax_code_obj.get_text()
-        value_obj = bsObj.find(id="ctl00_phArticle_ctlPropertyDetails_lblPropCharMktValCurrYear")
+        value_obj = bsObj.find_all("span", {"class":"detail-row--detail"})[12]
         self.value = value_obj.get_text()
         self.save()
 
