@@ -2,7 +2,7 @@ beautifulsoup4==4.7.1
 certifi==2019.6.16
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.2
+Django==2.2.13
 django-import-export==2.0.1
 django-pandas==0.6.1
 django-widget-tweaks==1.4.5
